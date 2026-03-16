@@ -30,24 +30,54 @@ int main(void)
         return 1;
     }
 
-    while(fscanf(arqv, "%d,%[^,],%[^,],%f", &produtos[total_registros].id, produtos[total_registros].nome, produtos[total_registros].categoria, &produtos[total_registros].valor) == 4)
+    char buffer[100];
+    fgets(buffer, sizeof(buffer), arqv);
+    printf("tentando ler...\n");
+    char linha[512];
+
+    while (fgets(linha, sizeof(linha), arqv))
+{
+    int lidos = sscanf(linha,
+    "%d,%50[^,],\"%30[^\"]\",%f",
+    &produtos[total_registros].id,
+    produtos[total_registros].nome,
+    produtos[total_registros].categoria,
+    &produtos[total_registros].valor);
+
+    if (lidos != 4)
     {
+        lidos = sscanf(linha, "%d,%50[^,],%30[^,],%f",
+        &produtos[total_registros].id,
+        produtos[total_registros].nome,
+        produtos[total_registros].categoria,
+        &produtos[total_registros].valor);
+    }
+    if (lidos != 4)
+    {
+        printf("Linha ignorada: %s\n", linha); //aqui foi só para diagnosticar o que estava dando de errado
+    }
+
+    if (lidos == 4)
+    {
+        //printf("Li um produto!\n");
         total_registros++;
+
         if (total_registros >= capacidade)
         {
-            capacidade = capacidade * 2;
+            capacidade *= 2;
             Produto *temp = realloc(produtos, capacidade * sizeof(Produto));
+
             if (temp == NULL)
             {
                 printf("Erro ao alocar memoria\n");
                 free(produtos);
                 return 1;
             }
+
             produtos = temp;
         }
-
-
     }
+}
 
     printf("%d Produtos lidos com sucesso.", total_registros);
     fclose(arqv);
