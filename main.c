@@ -10,5 +10,47 @@ float valor;
 
 int main(void)
 {
+    Produto *produtos = NULL;
+    int total_registros = 0;
+    int capacidade = 20;
+    FILE *arqv = NULL;
 
+
+    arqv = fopen("dataset3.csv", "r");
+    if (arqv == NULL)
+    {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    produtos = malloc(capacidade * sizeof(Produto));
+    if (produtos == NULL)
+    {
+        printf("Erro ao alocar memoria\n");
+        return 1;
+    }
+
+    while(fscanf(arqv, "%d,%[^,],%[^,],%f", &produtos[total_registros].id, produtos[total_registros].nome, produtos[total_registros].categoria, &produtos[total_registros].valor) == 4)
+    {
+        total_registros++;
+        if (total_registros >= capacidade)
+        {
+            capacidade = capacidade * 2;
+            Produto *temp = realloc(produtos, capacidade * sizeof(Produto));
+            if (temp == NULL)
+            {
+                printf("Erro ao alocar memoria\n");
+                free(produtos);
+                return 1;
+            }
+            produtos = temp;
+        }
+
+
+    }
+
+    printf("%d Produtos lidos com sucesso.", total_registros);
+    fclose(arqv);
+    free(produtos);
+    return 0;
 }
