@@ -31,21 +31,12 @@ Produto* ler_produtos(int* total)
 
     while (fgets(linha, sizeof(linha), arqv))
 {
-    int lidos = sscanf(linha,
-    "%d,%50[^,],\"%30[^\"]\",%f",
+    int lidos = sscanf(linha, "%d,%50[^,],%30[^,],%f",
     &produtos[total_registros].id,
     produtos[total_registros].nome,
     produtos[total_registros].categoria,
     &produtos[total_registros].valor);
 
-    if (lidos != 4)
-    {
-        lidos = sscanf(linha, "%d,%50[^,],%30[^,],%f",
-        &produtos[total_registros].id,
-        produtos[total_registros].nome,
-        produtos[total_registros].categoria,
-        &produtos[total_registros].valor);
-    }
     if (lidos != 4)
     {
         printf("Linha ignorada: %s\n", linha); //aqui foi só para diagnosticar o que estava dando de errado
@@ -75,6 +66,5 @@ Produto* ler_produtos(int* total)
     *total = total_registros;
     printf("%d Produtos lidos com sucesso.", total_registros);
     fclose(arqv);
-    free(produtos);
     return produtos;
 }
