@@ -64,7 +64,7 @@ Produto* ler_produtos(int* total)
     }
 }
     *total = total_registros;
-    printf("%d Produtos lidos com sucesso.", total_registros);
+    printf("%d Produtos lidos com sucesso.\n", total_registros);
     fclose(arqv);
     return produtos;
 }
