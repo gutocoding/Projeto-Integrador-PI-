@@ -44,7 +44,11 @@ int main(void)
 
     printf(">>> Medindo o melhor caso (Primeiro ID da lista)...\n");
     medir_tempo(produtos, total_reg, 43614);
-    
+
+    printf(">>> Medindo o caso inexistente...\n");
+    medir_tempo(produtos, total_reg, -999);
+
+    free(produtos);
     return 0;
     
 }
