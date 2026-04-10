@@ -7,7 +7,6 @@
 
 void salvar_id_no_arquivo(int id, double tempo);
 
-
 int main(void)
 {
     //Lendo produtos da planilha e armazenando em um vetor
@@ -15,22 +14,22 @@ int main(void)
     Produto *produtos = ler_produtos(&total_reg);
 
     //Testando funcao buscar
-    int bbusca = buscar(produtos, total_reg, 54165);
+    int bbusca = buscar(produtos, total_reg, 150000);
     if (bbusca != -1)
     {
-        printf("Achou ID: 54165, i: %d\n", bbusca);
+        printf("Achou ID: 150000, i: %d\n", bbusca);
     }
 
-    bbusca = buscar(produtos, total_reg, 2);
+    bbusca = buscar(produtos, total_reg, 5);
     if (bbusca != -1)
     {
-        printf("Achou ID: 2, i: %d\n", bbusca);
+        printf("Achou ID: 5, i: %d\n", bbusca);
     }
 
-    bbusca = buscar(produtos, total_reg, 900000000);
+    bbusca = buscar(produtos, total_reg, 300000000);
     if (bbusca != -1)
     {
-        printf("Achou ID: 900000000, i: %d\n", bbusca);
+        printf("Achou ID: 300000000, i: %d\n", bbusca);
     }
     else
     {
