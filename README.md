@@ -51,7 +51,7 @@ Para garantir a precisão dos dados, cada busca foi repetida 1.000 vezes, e calc
 | Pior Caso | ID localizado no final do arquivo (ex: ID 189553) | ~0.000884 s |
 | Caso Inexistente| ID não cadastrado na planilha (ex: ID -999) | ~0.000860 s |
 
- Conclusões
+ Conclusão 
 
 Os resultados obtidos comprovam as características teóricas da Busca Sequencial (complexidade O(n)):
 
