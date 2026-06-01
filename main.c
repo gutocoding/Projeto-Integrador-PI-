@@ -6,63 +6,25 @@
 #include "src/medirtempo.h"
 #include "src/hash.h"
 
-void salvar_id_no_arquivo(int id, double tempo);
-
+// void salvar_id_no_arquivo(int id, double tempo); // (Se for usar depois, pode manter)
 
 int main(void)
 {
-    printf("=== TESTE UNITARIO - TABELA HASH === \n");
-    TabelaHash* minha_tabela = inicializar_tabela(10);
-    Produto p1 = {1005, "Teclado", "Informatica", 150.0};
-    Produto p2 = {2005, "Mouse", "Informatica", 80.0};
+    printf("=== INICIANDO SISTEMA DE BUSCA ===\n");
 
-    inserir_hash(minha_tabela, p1);
-    inserir_hash(minha_tabela, p2);
-    Produto p3 = {3004, "Monitor", "Informatica", 900.0};
-    inserir_hash(minha_tabela, p3);
-    printf("Colisoes registradas: %d\n", minha_tabela->total_colisoes);
-
-    printf("\nItens na Gaveta 7:\n");
-    No* atual = minha_tabela->indices[7];
-    while (atual != NULL) {
-        printf(" -> ID: %d | Nome: %s\n", atual->produto.id, atual->produto.nome);
-        atual = atual->proximo;
-    }
-
-    liberar_tabela_hash(minha_tabela);
-    return 0;     //--- fim do teste unitario
-
-
-
-    //Lendo produtos da planilha e armazenando em um vetor
+    // 1. CARREGAMENTO BASE (Lendo o CSV)
     int total_reg = 0;
     Produto *produtos = ler_produtos(&total_reg);
 
-    //Testando funcao buscar
-    int bbusca = buscar(produtos, total_reg, 54165);
-    if (bbusca != -1)
-    {
-        printf("Achou ID: 54165, i: %d\n", bbusca);
+    if (produtos == NULL || total_reg == 0) {
+        printf("Falha critica ao ler o banco de dados.\n");
+        return 1;
     }
 
-    bbusca = buscar(produtos, total_reg, 2);
-    if (bbusca != -1)
-    {
-        printf("Achou ID: 2, i: %d\n", bbusca);
-    }
-
-    bbusca = buscar(produtos, total_reg, 900000000);
-    if (bbusca != -1)
-    {
-        printf("Achou ID: 900000000, i: %d\n", bbusca);
-    }
-    else
-    {
-        printf("ID 900000000 nao encontrado.\n");
-    }
-
-    //medindo o tempo
-
+    // ===================================================
+    // FASE I: TESTES DA BUSCA SEQUENCIAL (Baseline)
+    // ===================================================
+    printf("\n--- RESULTADOS DA FASE I (BUSCA SEQUENCIAL) ---\n");
     printf(">>> Medindo pior caso (ultimo ID da lista)...\n");
     medir_tempo(produtos, total_reg, 189553);
 
@@ -75,7 +37,36 @@ int main(void)
     printf(">>> Medindo o caso inexistente...\n");
     medir_tempo(produtos, total_reg, -999);
 
-    free(produtos);
-    return 0;
+
+    // ===================================================
+    // FASE II: TABELA HASH
+    // ===================================================
+    printf("\n--- INICIALIZANDO FASE II (TABELA HASH) ---\n");
     
+    // Inicializa a tabela com o tamanho exato do dataset
+    TabelaHash* tabela = inicializar_tabela(total_reg);
+    if (tabela == NULL) {
+        free(produtos); // Se falhar, limpa o vetor antes de fechar
+        return 1;
+    }
+
+    printf("Populando a Tabela Hash com %d registros...\n", total_reg);
+    // Transfere todos os produtos do vetor para a Tabela Hash
+    for (int i = 0; i < total_reg; i++) {
+        inserir_hash(tabela, produtos[i]);
+    }
+
+    printf("\n=== RELATORIO DE CARREGAMENTO (HASH) ===\n");
+    printf("Quantidade total de registros carregados: %d\n", total_reg);
+    printf("Numero total de colisoes: %d\n", tabela->total_colisoes);
+    printf("========================================\n\n");
+
+
+    // ---------------------------------------------------
+    // LIMPEZA FINAL DA MEMÓRIA
+    // ---------------------------------------------------
+    liberar_tabela_hash(tabela);
+    free(produtos);
+    
+    return 0;
 }
