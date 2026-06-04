@@ -1,4 +1,4 @@
-# Projeto Integrador: Análise Experimental de Algoritmos de Busca# Projeto Integrador: Análise Experimental de Algoritmos de Busca
+# Projeto Integrador: Análise Experimental de Algoritmos de Busca 
 Este projeto analisa o desempenho de busca em um dataset real de 300.007 registros de produtos (`dataset3.csv`), comparando a eficiência da Busca Sequencial com a Tabela Hash.
 ## 🚀 Métodos Implementados
 ### Fase I: Busca Sequencial
