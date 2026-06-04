@@ -1,64 +1,29 @@
-# Projeto-Integrador-PI- Fase I
-Analise de desempenho: busca Sequencial em c 
+# Projeto Integrador: Análise Experimental de Algoritmos de Busca# Projeto Integrador: Análise Experimental de Algoritmos de Busca
+Este projeto analisa o desempenho de busca em um dataset real de 300.007 registros de produtos (`dataset3.csv`), comparando a eficiência da Busca Sequencial com a Tabela Hash.
+## 🚀 Métodos Implementados
+### Fase I: Busca Sequencial
+- Algoritmo: Varredura linear com complexidade $O(n)$.
+- Medição: Média de tempo após 1.000 repetições por cenário.
+### Fase II: Tabela Hash (Dobra + Encadeamento)
+- Algoritmo: Acesso via função hash com complexidade média $O(1)$.
+- Função: Dobra simples de dois blocos: `h(x) = ((x/1000) + (x%1000)) % m`.
+- Tratamento de Colisões: Encadeamento externo via listas encadeadas.
+# 📊 Comparativo de Resultados
 
-Este projeto realiza a leitura de um dataset de produtos e analisa o tempo de 
-execução do algoritmo de busca sequencial em diferentes cenarios.
+| Cenário | ID Buscado | Tempo Sequencial | Tempo Hash |
+| :--- | :--- | :--- | :--- |
+| Melhor Caso | 43614 | 0,000000 s | *[Inserir] s* |
+| Caso Médio | 127776 | 0,000256 s | *[Inserir] s* |
+| Pior Caso | 189553 | 0,001227 s | *[Inserir] s* |
+| Inexistente | -999 | 0,001246 s | *[Inserir] s* |
 
-Estrutura do projeto :
-- 'main.c' : ponto de entrada do programa e logica de testes.
-- 'src/': pasta contendo os módulos do sistema.
-- 'lerprodutos.c/h': Funções para ler o arquivo CVS e alocação dinâmica.
-- 'busca.c/h': implementação do algoritmo de busca sequencial.
-- 'medirtempo.c/h': Funções para cronometragem de desempenho.
-- 'dataset3.cvs': Arquivo de dados com os produtos.
-
-Como Copilar e Rodar 
-
-o comando para realizar os teste:
-gcc teste/teste_final.c src/*.c teste/id_txt.c -o programa_teste -I. 
-
-Como o projeto é modular, utilize o seguinte comando no terminal(dentro da pasta raiz) para compilar :
-gcc main.c src/*c. -o programa -I.
-
-Para executar o programa:
-.\programa.exe
-
-Funcionalidades implementadas 
-- [x] leitura dinamica de arquivos CVS ultilizando rewind().
-- [x] alocação dinamica de memória para armazenamento dos produtos.
-- [x] busca sequencial por id. 
-- [x] medição de tempo medio apos 1.000 repetições .
-
- Análise de Desempenho e Resultados
-
-Nesta fase do Projeto Integrador, focamos na validação e medição de desempenho do algoritmo de Busca Sequencial. Os testes foram realizados utilizando um dataset real com mais de 300.000 registros de produtos (`dataset3.csv`).
-
-Para garantir a precisão dos dados, cada busca foi repetida 1.000 vezes, e calculamos a média de tempo por busca (em segundos). Os cenários testados foram:
-
-| Cenário | ID Buscado | Tempo Médio (s) |
-| :--- | :--- | :--- |
-| Melhor Caso | 43614 | 0.000000 |
-| Caso Médio | 127776 | 0.000256 |
-| Pior Caso | 189553 | 0.001227 |
-| Inexistente | -999 | 0.001246 |
-
-> Nota: O sistema gera automaticamente um log detalhado em `relatorio_testes.txt`.
-
-| Cenário de Teste | Descrição | Tempo Médio (s) |
-| :--- | :--- | :--- |
-| Melhor Caso | ID localizado no início do arquivo (ex: ID 43614) | ~0.000000 s |
-| Caso Mediano| ID localizado no meio do arquivo (ex: ID 127776) | ~0.000221 s |
-| Pior Caso | ID localizado no final do arquivo (ex: ID 189553) | ~0.000884 s |
-| Caso Inexistente| ID não cadastrado na planilha (ex: ID -999) | ~0.000860 s |
-
- Conclusão 
-
-Os resultados obtidos comprovam as características teóricas da Busca Sequencial (complexidade O(n)):
-
-1.  Linearidade: O tempo de execução aumenta de forma proporcional à posição do item no arquivo. O pior caso demorou aproximadamente 4 vezes mais que o caso médio, pois precisou percorrer quase o dataset inteiro.
-2.  Eficiência Limidada: Embora eficiente para datasets pequenos ou quando o item está no início, a performance degrada significativamente para buscas no final do arquivo ou para itens inexistentes, onde o algoritmo é forçado a ler todas as 300.007 linhas.
-
-
-Integrantes 
+## 💻 Compilação e Execução
+Utilize o compilador `gcc` na pasta raiz do projeto:
+```bash
+# Compilar
+gcc main.c src/*.c -o programa -I.
+# Executar
+./programa
+integrantes  
 - Sabrina Borges da Trindade 
 - Augusto Santana de Souza 
