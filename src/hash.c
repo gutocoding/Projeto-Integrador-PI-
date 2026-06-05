@@ -27,10 +27,13 @@ TabelaHash* inicializar_tabela(int tamanho)
 
 int funcao_hash(int id, int tamanho)
 {
-    int bloco1 = id / 1000;
-    int bloco2 = id % 1000;
+    int id_positivo = abs(id);
+    int bloco1 = id_positivo / 1000;
+    int bloco2 = id_positivo % 1000;
+    
     int resultado = bloco1 + bloco2;
     int indice = resultado % tamanho;
+    
     return indice;
 }
 
@@ -77,4 +80,24 @@ void liberar_tabela_hash(TabelaHash* tabela)
     }
     free(tabela->indices);    
     free(tabela);
+}
+
+// Função que busca um ID na Tabela Hash. Retorna 1 (Achou) ou 0 (Não achou)
+int buscar_hash(TabelaHash* tabela, int id_buscado) 
+{
+    if (tabela == NULL) return 0;
+
+    int indice = funcao_hash(id_buscado, tabela->tamanho);
+
+    No* atual = tabela->indices[indice];
+
+    while (atual != NULL) 
+    {
+        if (atual->produto.id == id_buscado) {
+            return 1; 
+        }
+        atual = atual->proximo; 
+    }
+
+    return 0; 
 }

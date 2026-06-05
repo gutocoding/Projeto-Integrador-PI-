@@ -6,7 +6,43 @@
 #include "src/medirtempo.h"
 #include "src/hash.h"
 
-// void salvar_id_no_arquivo(int id, double tempo); // (Se for usar depois, pode manter)
+void motor_de_buscas_hash(TabelaHash* tabela, Produto* vetor_base, int total_reg) {
+    printf(">>> Iniciando Motor de Buscas Automatizado (1000 iteracoes)...\n");
+    
+    int encontradas = 0;
+    int nao_encontradas = 0;
+
+    // Inicializa a semente de números aleatórios do C para garantir que seja randomico
+    srand(time(NULL)); 
+
+    // O loop ininterrupto exigido pelo Critério de Aceite
+    for (int i = 0; i < 1000; i++) {
+        int id_teste;
+
+        // Sorteia um número de 0 a 1. Se for 0 (50% de chance), busca um ID real.
+        if (rand() % 2 == 0) {
+            int indice_aleatorio = rand() % total_reg;
+            id_teste = vetor_base[indice_aleatorio].id;
+        } 
+        else {
+            id_teste = - (rand() % 10000) - 1; 
+        }
+
+        // Executa a busca na Hash
+        int resultado = buscar_hash(tabela, id_teste);
+
+        if (resultado == 1) {
+            encontradas++;
+        } else {
+            nao_encontradas++;
+        }
+    }
+
+    printf("Motor finalizado! Resultados das 1000 buscas aleatorias:\n");
+    printf("- Chaves Existentes encontradas: %d\n", encontradas);
+    printf("- Chaves Inexistentes detectadas: %d\n", nao_encontradas);
+    printf("========================================\n\n");
+}
 
 int main(void)
 {
@@ -60,6 +96,8 @@ int main(void)
     printf("Quantidade total de registros carregados: %d\n", total_reg);
     printf("Numero total de colisoes: %d\n", tabela->total_colisoes);
     printf("========================================\n\n");
+
+    motor_de_buscas_hash(tabela, produtos, total_reg); //Chamando buscas
 
 
     // ---------------------------------------------------
