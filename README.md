@@ -27,4 +27,4 @@ gcc main.c src/*.c -o programa -I.
 
 #integrantes   
 - Sabrina Borges da Trindade 
-- Augusto Santana de Souza 
+- Augusto Santana de Sousa
