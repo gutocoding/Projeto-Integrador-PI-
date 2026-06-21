@@ -7,41 +7,62 @@
 #include "src/hash.h"
 
 void motor_de_buscas_hash(TabelaHash* tabela, Produto* vetor_base, int total_reg) {
-    printf(">>> Iniciando Motor de Buscas Automatizado (1000 iteracoes)...\n");
+    printf(">>> Iniciando Motor de Buscas Automatizado (Protocolo de 3 Rodadas)...\n");
     
-    int encontradas = 0;
-    int nao_encontradas = 0;
-
-    // Inicializa a semente de números aleatórios do C para garantir que seja randomico
     srand(time(NULL)); 
+    
+    double soma_tempos_totais = 0.0;
+    int total_encontradas = 0;
+    int total_nao_encontradas = 0;
 
-    // O loop ininterrupto exigido pelo Critério de Aceite
-    for (int i = 0; i < 1000; i++) {
-        int id_teste;
-
-        // Sorteia um número de 0 a 1. Se for 0 (50% de chance), busca um ID real.
-        if (rand() % 2 == 0) {
-            int indice_aleatorio = rand() % total_reg;
-            id_teste = vetor_base[indice_aleatorio].id;
-        } 
-        else {
-            id_teste = - (rand() % 10000) - 1; 
+    // CRITÉRIO DE ACEITE: Rodar o teste 3 vezes
+    for (int rodada = 1; rodada <= 3; rodada++) {
+        int encontradas = 0;
+        int nao_encontradas = 0;
+        
+        int chaves_teste[1000];
+        for (int i = 0; i < 1000; i++) {
+            if (rand() % 2 == 0) {
+                int indice_aleatorio = rand() % total_reg;
+                chaves_teste[i] = vetor_base[indice_aleatorio].id;
+            } else {
+                chaves_teste[i] = - (rand() % 10000) - 1; 
+            }
         }
-
-        // Executa a busca na Hash
-        int resultado = buscar_hash(tabela, id_teste);
-
-        if (resultado == 1) {
-            encontradas++;
-        } else {
-            nao_encontradas++;
+        
+        // 2. CRITÉRIO DE ACEITE: Medição de alta precisão (Apenas a busca)
+        clock_t inicio = clock();
+        
+        for (int i = 0; i < 1000; i++) {
+            int resultado = buscar_hash(tabela, chaves_teste[i]);
+            
+            if (resultado == 1) encontradas++;
+            else nao_encontradas++;
         }
+        
+        clock_t fim = clock();
+        
+        double tempo_rodada = (double)(fim - inicio) / CLOCKS_PER_SEC;
+        soma_tempos_totais += tempo_rodada;
+        
+        total_encontradas += encontradas;
+        total_nao_encontradas += nao_encontradas;
+        
+        printf(" -> Rodada %d finalizada. Tempo: %f segundos\n", rodada, tempo_rodada);
     }
-
-    printf("Motor finalizado! Resultados das 1000 buscas aleatorias:\n");
-    printf("- Chaves Existentes encontradas: %d\n", encontradas);
-    printf("- Chaves Inexistentes detectadas: %d\n", nao_encontradas);
-    printf("========================================\n\n");
+    
+    // 4. CRITÉRIO DE ACEITE: Calcular a média final e exibir outputs
+    double media_tempo_total_1000 = soma_tempos_totais / 3.0; 
+    double tempo_medio_por_busca = media_tempo_total_1000 / 1000.0;
+    
+    printf("\n=== RESULTADO FINAL DO MOTOR (TABELA HASH) ===\n");
+    printf("Total de buscas realizadas: 3000 (3 rodadas de 1000)\n");
+    printf("- Chaves Existentes encontradas: %d\n", total_encontradas);
+    printf("- Chaves Inexistentes detectadas: %d\n", total_nao_encontradas);
+    printf("----------------------------------------------\n");
+    printf("Tempo MEDIO TOTAL (1000 buscas): %f segundos\n", media_tempo_total_1000);
+    printf("Tempo MEDIO POR BUSCA individual : %f segundos\n", tempo_medio_por_busca);
+    printf("==============================================\n\n");
 }
 
 int main(void)
