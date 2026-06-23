@@ -12,10 +12,10 @@ Este projeto analisa o desempenho de busca em um dataset real de 300.007 registr
 
 | Cenário | ID Buscado | Tempo Sequencial | Tempo Hash |
 | :--- | :--- | :--- | :--- |
-| Melhor Caso | 43614 | 0,000000 s | *[Inserir] s* |
-| Caso Médio | 127776 | 0,000256 s | *[Inserir] s* |
-| Pior Caso | 189553 | 0,001227 s | *[Inserir] s* |
-| Inexistente | -999 | 0,001246 s | *[Inserir] s* |
+| Melhor Caso | 43614 | 0,000000 s | 0,000032 s     |
+| Caso Médio | 127776 | 0,000256 s | 0,000032 s     |
+| Pior Caso | 189553 | 0,001227 s | 0,000032 s    |
+| Inexistente | -999 | 0,001246 s | 0,000032 s   |
 
 ## 💻 Compilação e Execução
 Utilize o compilador `gcc` na pasta raiz do projeto:
@@ -25,6 +25,6 @@ gcc main.c src/*.c -o programa -I.
 # Executar
 ./programa
 
-#integrantes   
+##integrantes   
 - Sabrina Borges da Trindade 
 - Augusto Santana de Sousa
